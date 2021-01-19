@@ -7,7 +7,7 @@ class RestaurantResponse {
 
   RestaurantResponse.fromJson(Map<String, dynamic> json) {
     if (json['restaurants'] != null) {
-      restaurants = new List<Restaurants>();
+      restaurants = [];
       json['restaurants'].forEach((v) {
         restaurants.add(new Restaurants.fromJson(v));
       });
