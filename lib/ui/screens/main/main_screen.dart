@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/core/models/restaurant/restaurant_response.dart';
+import 'package:restaurant_app/ui/screens/detail/detail_screen.dart';
 import 'package:restaurant_app/utils/file_helper.dart';
+import 'package:restaurant_app/utils/sources/strings.dart';
+import 'package:restaurant_app/utils/styles/size.dart';
 
 class MainScreen extends StatefulWidget {
   static const routeName = 'main';
@@ -30,49 +33,54 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
+        physics: BouncingScrollPhysics(),
         slivers: <Widget>[
-          SliverAppBar(
-            leading: IconButton(
-                icon: Icon(Icons.filter_1),
-                onPressed: () {
-                  // Do something
-                }),
-            expandedHeight: 220.0,
-            floating: true,
-            pinned: true,
-            snap: true,
-            elevation: 50,
-            backgroundColor: Colors.pink,
-            flexibleSpace: FlexibleSpaceBar(
-                centerTitle: true,
-                title: Text('Title',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    )),
-                background: Image.network(
-                  'https://images.pexels.com/photos/443356/pexels-photo-443356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-                  fit: BoxFit.cover,
-                )),
-          ),
-          new SliverList(
-              delegate:
-                  new SliverChildListDelegate(_buildList(_restaurantList))),
+          _buildAppBar(),
+          _buildList(),
         ],
       ),
     );
   }
 
-  List _buildList(List<Restaurants> restaurants) {
-    List<Widget> listItems = [];
+  Widget _buildAppBar() {
+    return SliverAppBar(
+      expandedHeight: 220.0,
+      elevation: softElevation,
+      flexibleSpace: FlexibleSpaceBar(
+        title: Text(GlobalString.title),
+        background: Image.network(
+          'https://images.unsplash.com/photo-1516685018646-549198525c1b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
 
-    for (int i = 0; i < restaurants.length; i++) {
-      listItems.add(Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Text('Item ${restaurants[i].name}',
-              style: TextStyle(fontSize: 25.0))));
-    }
+  Widget _buildList() {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          return _buildListItem(index);
+        },
+        childCount: _restaurantList.length,
+      ),
+    );
+  }
 
-    return listItems;
+  Widget _buildListItem(index) {
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(
+        context,
+        DetailScreen.routeName,
+        arguments: _restaurantList[index],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(20.0),
+        child: Text(
+          _restaurantList[index].name,
+          style: TextStyle(fontSize: 25.0),
+        ),
+      ),
+    );
   }
 }
