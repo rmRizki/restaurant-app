@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
-class ScrollFloatingActionBar extends StatefulWidget {
+class ScrollFloatingActionButton extends StatefulWidget {
   final ScrollController scrollController;
 
-  ScrollFloatingActionBar({@required this.scrollController});
+  ScrollFloatingActionButton({@required this.scrollController});
 
   @override
-  _ScrollFloatingActionBarState createState() =>
-      _ScrollFloatingActionBarState();
+  _ScrollFloatingActionButtonState createState() =>
+      _ScrollFloatingActionButtonState();
 }
 
-class _ScrollFloatingActionBarState extends State<ScrollFloatingActionBar> {
+class _ScrollFloatingActionButtonState
+    extends State<ScrollFloatingActionButton> {
   ScrollController _scrollController;
   bool _isVisible;
 
