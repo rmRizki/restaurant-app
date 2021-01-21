@@ -14,6 +14,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primaryColor: grey_100,
         fontFamily: FontFamily.monserat,
+        accentColor: orange,
       ),
       initialRoute: MainScreen.routeName,
       onGenerateRoute: AppRoute.generateRoute,
