@@ -12,7 +12,7 @@ class AppRoute {
       case DetailScreen.routeName:
         Restaurants restaurants = settings.arguments;
         return MaterialPageRoute(
-          builder: (_) => DetailScreen(restaurants: restaurants),
+          builder: (_) => DetailScreen(restaurant: restaurants),
         );
       default:
         return MaterialPageRoute(
