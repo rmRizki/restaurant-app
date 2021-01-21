@@ -13,8 +13,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  cupertino_icons: ^1.0.1
+  cached_network_image: ^2.5.0
+  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
@@ -26,6 +26,7 @@ flutter:
 
   assets:
     - assets/local_restaurant.json
+    - assets/images/main.jpg
 
   fonts:
     - family: Montserrat
