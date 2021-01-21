@@ -12,7 +12,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: GlobalString.title,
       theme: ThemeData(
-        primaryColor: primary_100,
+        primaryColor: grey_100,
         fontFamily: FontFamily.monserat,
       ),
       initialRoute: MainScreen.routeName,
