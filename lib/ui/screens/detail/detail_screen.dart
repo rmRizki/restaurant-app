@@ -106,15 +106,13 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Widget _buildTitle() {
-    return Expanded(
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        child: Text(
-          widget.restaurant.name,
-          style: headingText.copyWith(
-              color: orange, fontWeight: FontWeight.normal),
-          textAlign: TextAlign.center,
-        ),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: Text(
+        widget.restaurant.name,
+        style:
+            headingText.copyWith(color: orange, fontWeight: FontWeight.normal),
+        textAlign: TextAlign.center,
       ),
     );
   }
