@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:restaurant_app/core/models/restaurant/restaurant_response.dart';
 import 'package:restaurant_app/ui/screens/main/widgets/restaurant_card.dart';
+import 'package:restaurant_app/ui/shared/component/scroll_floating_action_bar.dart';
 import 'package:restaurant_app/utils/file_helper.dart';
 import 'package:restaurant_app/utils/sources/images.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';
@@ -17,11 +19,19 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   List<Restaurants> _restaurantList = [];
+  ScrollController _scrollController;
 
   @override
   void initState() {
     _getRestaurantList();
+    _scrollController = ScrollController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   _getRestaurantList() async {
@@ -35,8 +45,11 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton:
+          ScrollFloatingActionBar(scrollController: _scrollController),
       backgroundColor: white,
       body: CustomScrollView(
+        controller: _scrollController,
         physics: BouncingScrollPhysics(),
         slivers: <Widget>[
           _buildAppBar(),
