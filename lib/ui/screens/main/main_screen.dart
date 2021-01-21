@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:restaurant_app/core/models/restaurant/restaurant_response.dart';
 import 'package:restaurant_app/ui/screens/main/widgets/restaurant_card.dart';
+import 'package:restaurant_app/ui/screens/screens.dart';
 import 'package:restaurant_app/ui/shared/component/scroll_floating_action_bar.dart';
 import 'package:restaurant_app/utils/file_helper.dart';
 import 'package:restaurant_app/utils/sources/images.dart';
@@ -85,9 +86,17 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _buildListItem(index) {
+    Restaurants restaurant = _restaurantList[index];
     return Container(
       margin: EdgeInsets.only(right: 16.0, left: 16.0, top: 16.0),
-      child: RestaurantCard(restaurant: _restaurantList[index]),
+      child: RestaurantCard(
+        restaurant: restaurant,
+        onPressed: () => Navigator.pushNamed(
+          context,
+          DetailScreen.routeName,
+          arguments: restaurant,
+        ),
+      ),
     );
   }
 }

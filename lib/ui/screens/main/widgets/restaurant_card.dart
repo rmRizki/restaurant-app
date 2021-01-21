@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:restaurant_app/core/models/restaurant/restaurant_response.dart';
-import 'package:restaurant_app/ui/screens/screens.dart';
 import 'package:restaurant_app/ui/shared/container/card_container.dart';
 import 'package:restaurant_app/ui/shared/separator/separator.dart';
 import 'package:restaurant_app/utils/styles/colors.dart';
@@ -11,19 +10,16 @@ import 'package:restaurant_app/utils/styles/size.dart';
 import 'package:restaurant_app/utils/styles/text.dart';
 
 class RestaurantCard extends StatelessWidget {
-  RestaurantCard({this.restaurant});
+  RestaurantCard({this.restaurant, this.onPressed});
 
   final Restaurants restaurant;
+  final Function onPressed;
 
   @override
   Widget build(BuildContext context) {
     return CardContainer(
       decoration: BaseDecoration.shadowDecoration,
-      onPressed: () => Navigator.pushNamed(
-        context,
-        DetailScreen.routeName,
-        arguments: restaurant,
-      ),
+      onPressed: onPressed,
       padding: EdgeInsets.all(24.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
