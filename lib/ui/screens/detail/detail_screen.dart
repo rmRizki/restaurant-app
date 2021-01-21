@@ -1,13 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/core/models/restaurant/restaurant_response.dart';
+import 'package:restaurant_app/utils/styles/colors.dart';
 import 'package:restaurant_app/utils/styles/size.dart';
 
 class DetailScreen extends StatelessWidget {
   static const routeName = 'detail';
 
-  final Restaurants restaurants;
+  final Restaurants restaurant;
 
-  DetailScreen({this.restaurants});
+  DetailScreen({this.restaurant});
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +28,16 @@ class DetailScreen extends StatelessWidget {
     return SliverAppBar(
       expandedHeight: 220.0,
       elevation: softElevation,
+      backgroundColor: white,
       flexibleSpace: FlexibleSpaceBar(
-        background: Image.network(
-          restaurants.pictureId,
-          fit: BoxFit.cover,
+        background: Hero(
+          tag: '${restaurant.pictureId}',
+          child: CachedNetworkImage(
+            imageUrl: restaurant.pictureId,
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
@@ -37,7 +45,7 @@ class DetailScreen extends StatelessWidget {
 
   Widget _buildList() {
     return SliverList(
-      delegate: SliverChildListDelegate([Text(restaurants.name)]),
+      delegate: SliverChildListDelegate([Text(restaurant.name)]),
     );
   }
 }
