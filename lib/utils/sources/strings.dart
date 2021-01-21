@@ -1,6 +1,7 @@
 class GlobalString {
   static const title = 'Resto.';
   static const search = 'Cari...';
+  static const back = 'Kembali';
   static const page_not_found = 'Halaman Tidak Ditemukan';
 }
 
@@ -9,7 +10,10 @@ class MainString {
 }
 
 class DetailString {
-  static const description = 'Deskripsi';
+  static const description = 'Tentang Restaurant';
   static const food = 'Makanan';
   static const drink = 'Minuman';
+  static const rating = 'Rating';
+  static const city = 'Alamat';
+  static const totalMenu = 'Total Menu';
 }
