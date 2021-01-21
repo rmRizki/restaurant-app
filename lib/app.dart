@@ -13,7 +13,7 @@ class App extends StatelessWidget {
       title: GlobalString.title,
       theme: ThemeData(
         primaryColor: grey_100,
-        fontFamily: FontFamily.monserat,
+        fontFamily: FontFamily.montserrat,
         accentColor: orange,
       ),
       initialRoute: MainScreen.routeName,

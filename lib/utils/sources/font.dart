@@ -1,3 +1,3 @@
 class FontFamily {
-  static const monserat = 'Montserrat';
+  static const montserrat = 'Montserrat';
 }
