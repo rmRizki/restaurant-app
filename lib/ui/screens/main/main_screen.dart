@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:restaurant_app/core/models/restaurant/restaurant_response.dart';
 import 'package:restaurant_app/ui/screens/main/widgets/restaurant_card.dart';
 import 'package:restaurant_app/ui/screens/screens.dart';
-import 'package:restaurant_app/ui/shared/component/scroll_floating_action_bar.dart';
+import 'package:restaurant_app/ui/shared/component/scroll_floating_action_button.dart';
 import 'package:restaurant_app/utils/file_helper.dart';
 import 'package:restaurant_app/utils/sources/images.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';
@@ -47,7 +47,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton:
-          ScrollFloatingActionBar(scrollController: _scrollController),
+          ScrollFloatingActionButton(scrollController: _scrollController),
       backgroundColor: white,
       body: CustomScrollView(
         controller: _scrollController,
