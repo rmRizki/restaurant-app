@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:restaurant_app/core/models/restaurant/restaurant_response.dart';
-import 'package:restaurant_app/ui/screens/detail/detail_screen.dart';
+import 'package:restaurant_app/ui/screens/main/widgets/restaurant_card.dart';
 import 'package:restaurant_app/utils/file_helper.dart';
+import 'package:restaurant_app/utils/sources/images.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';
+import 'package:restaurant_app/utils/styles/colors.dart';
 import 'package:restaurant_app/utils/styles/size.dart';
 
 class MainScreen extends StatefulWidget {
@@ -32,6 +35,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: white,
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
         slivers: <Widget>[
@@ -48,8 +52,8 @@ class _MainScreenState extends State<MainScreen> {
       elevation: softElevation,
       flexibleSpace: FlexibleSpaceBar(
         title: Text(GlobalString.title),
-        background: Image.network(
-          'https://images.unsplash.com/photo-1516685018646-549198525c1b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
+        background: Image.asset(
+          BaseImages.mainImage,
           fit: BoxFit.cover,
         ),
       ),
@@ -68,19 +72,9 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _buildListItem(index) {
-    return GestureDetector(
-      onTap: () => Navigator.pushNamed(
-        context,
-        DetailScreen.routeName,
-        arguments: _restaurantList[index],
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Text(
-          _restaurantList[index].name,
-          style: TextStyle(fontSize: 25.0),
-        ),
-      ),
+    return Container(
+      margin: EdgeInsets.only(right: 16.0, left: 16.0, top: 16.0),
+      child: RestaurantCard(restaurant: _restaurantList[index]),
     );
   }
 }
