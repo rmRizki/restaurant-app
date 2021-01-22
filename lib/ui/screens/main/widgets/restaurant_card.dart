@@ -19,7 +19,7 @@ class RestaurantCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardContainer(
-      decoration: BaseDecoration.shadowDecoration,
+      decoration: BaseDecoration.cardDecorationShadow,
       onPressed: onPressed,
       padding: EdgeInsets.all(24.0),
       child: Row(

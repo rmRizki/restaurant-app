@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/utils/styles/colors.dart';
 
 class ScrollFloatingActionButton extends StatefulWidget {
   final ScrollController scrollController;
@@ -52,7 +53,7 @@ class _ScrollFloatingActionButtonState
       opacity: _isVisible ? 1 : 0,
       child: FloatingActionButton(
         onPressed: _scrollUp,
-        child: Icon(Icons.arrow_upward),
+        child: Icon(Icons.arrow_upward, color: white),
       ),
     );
   }

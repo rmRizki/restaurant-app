@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:restaurant_app/core/blocs/blocs.dart';
@@ -91,16 +89,9 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _buildAppBar() {
     return SliverAppBar(
-      leading: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () => print('search'),
-            ),
-          ),
-        ],
+      leading: IconButton(
+        icon: Icon(Icons.search),
+        onPressed: () => print('search'),
       ),
       expandedHeight: 220.0,
       elevation: softElevation,
