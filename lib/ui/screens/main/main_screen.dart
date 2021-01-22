@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:restaurant_app/core/models/restaurant/restaurant_detail.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:restaurant_app/core/blocs/blocs.dart';
+import 'package:restaurant_app/core/models/models.dart';
 import 'package:restaurant_app/ui/screens/main/widgets/restaurant_card.dart';
 import 'package:restaurant_app/ui/screens/screens.dart';
 import 'package:restaurant_app/ui/shared/component/scroll_floating_action_button.dart';
-import 'package:restaurant_app/utils/file_helper.dart';
 import 'package:restaurant_app/utils/sources/images.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';
 import 'package:restaurant_app/utils/styles/colors.dart';
 import 'package:restaurant_app/utils/styles/size.dart';
+import 'package:restaurant_app/utils/styles/text.dart';
 
 class MainScreen extends StatefulWidget {
   static const routeName = 'main';
@@ -19,13 +22,15 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  List<Restaurants> _restaurantList = [];
   ScrollController _scrollController;
+  RefreshController _refreshController;
+  RestaurantListBloc _restaurantListBloc;
 
   @override
   void initState() {
-    _getRestaurantList();
     _scrollController = ScrollController();
+    _restaurantListBloc = RestaurantListBloc();
+    _refreshController = RefreshController();
     super.initState();
   }
 
@@ -35,26 +40,46 @@ class _MainScreenState extends State<MainScreen> {
     super.dispose();
   }
 
-  _getRestaurantList() async {
-    final data = await readJson(context, 'assets/local_restaurant.json');
-    RestaurantResponse rs = RestaurantResponse.fromJson(data);
-    setState(() {
-      _restaurantList = rs.restaurants;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton:
           ScrollFloatingActionButton(scrollController: _scrollController),
       backgroundColor: white,
-      body: CustomScrollView(
+      body: BlocProvider(
+        create: (context) => _restaurantListBloc,
+        child: BlocBuilder<RestaurantListBloc, RestaurantListState>(
+          builder: (context, state) {
+            if (state is RestaurantListInitial) {
+              _restaurantListBloc.add(RestaurantListRequested());
+            }
+            if (state is RestaurantListLoadInProgress) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (state is RestaurantListLoadFailure) {
+              return _buildError('${state.err}');
+            }
+            if (state is RestaurantListLoadSuccess) {
+              final restaurantList = state.restaurantList;
+              return _buildMainScreen(restaurantList);
+            }
+            return Container();
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMainScreen(RestaurantList restaurantList) {
+    return SmartRefresher(
+      controller: _refreshController,
+      onRefresh: _onReload,
+      child: CustomScrollView(
         controller: _scrollController,
         physics: BouncingScrollPhysics(),
         slivers: <Widget>[
           _buildAppBar(),
-          _buildList(),
+          _buildList(restaurantList),
         ],
       ),
     );
@@ -62,6 +87,17 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _buildAppBar() {
     return SliverAppBar(
+      leading: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () => print('search'),
+            ),
+          ),
+        ],
+      ),
       expandedHeight: 220.0,
       elevation: softElevation,
       flexibleSpace: FlexibleSpaceBar(
@@ -74,19 +110,19 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _buildList() {
+  Widget _buildList(RestaurantList restaurantList) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          return _buildListItem(index);
+          return _buildListItem(restaurantList, index);
         },
-        childCount: _restaurantList.length,
+        childCount: restaurantList.count,
       ),
     );
   }
 
-  Widget _buildListItem(index) {
-    Restaurants restaurant = _restaurantList[index];
+  Widget _buildListItem(RestaurantList restaurantList, int index) {
+    Restaurants restaurant = restaurantList.restaurants[index];
     return Container(
       margin: EdgeInsets.only(right: 16.0, left: 16.0, top: 16.0),
       child: RestaurantCard(
@@ -98,5 +134,35 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildError(String err) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 24.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(GlobalString.failed_request, textAlign: TextAlign.center),
+          SizedBox(height: 4.0),
+          Text(
+            err,
+            textAlign: TextAlign.center,
+            style: smallCaption.copyWith(color: primary_100),
+          ),
+          SizedBox(height: 8.0),
+          MaterialButton(
+            onPressed: _onReload,
+            color: orange,
+            child: Text(GlobalString.reload,
+                style: buttonLabel.copyWith(color: white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _onReload() {
+    _restaurantListBloc.add(RestaurantListRequested());
   }
 }

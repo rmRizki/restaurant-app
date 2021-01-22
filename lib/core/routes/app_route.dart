@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/core/models/restaurant/restaurant_detail.dart';
+import 'package:restaurant_app/core/models/models.dart';
 import 'package:restaurant_app/ui/screens/screens.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';
 
