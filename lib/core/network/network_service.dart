@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
 import 'package:restaurant_app/core/data/config.dart';
 
 import 'logging_interceptor.dart';
@@ -68,42 +67,6 @@ class NetworkService {
           responseType: responseType,
           headers: headersRequest(),
         ),
-      ),
-    );
-  }
-
-  /// Send Http PUT Request
-  Future<Response> put({String url, Map<String, dynamic> data}) async {
-    return await _safeFetch(() =>
-        dio.put(url, data: data, options: Options(headers: headersRequest())));
-  }
-
-  /// Send Http DELETE Request
-  Future<Response> delete(
-      {String url, dynamic data, Map<String, dynamic> parameters}) async {
-    return await _safeFetch(() => dio.delete(url,
-        data: data,
-        queryParameters: parameters,
-        options: Options(headers: headersRequest())));
-  }
-
-  /// Send Http UPLOAD Request
-  Future<Response> upload({String url, FormData formData}) async {
-    return await _safeFetch(() => dio.post(url,
-        data: formData, options: Options(headers: headersRequest())));
-  }
-
-  /// Send Http download Request
-  Future<Response> download(
-      {@required String url,
-      @required String savePath,
-      @required ProgressCallback onReceiveProgress}) async {
-    return await _safeFetch(
-      () => dio.download(
-        url,
-        savePath,
-        onReceiveProgress: onReceiveProgress,
-        options: Options(headers: headersRequest()),
       ),
     );
   }
