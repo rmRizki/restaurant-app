@@ -1,11 +1,23 @@
 class RestaurantList {
   bool error;
+  int founded;
+  String message;
+  int count;
   List<Restaurants> restaurants;
 
-  RestaurantList({this.error, this.restaurants});
+  RestaurantList({
+    this.error,
+    this.founded,
+    this.message,
+    this.count,
+    this.restaurants,
+  });
 
   RestaurantList.fromJson(Map<String, dynamic> json) {
     error = json['error'];
+    founded = json['founded'];
+    message = json['message'];
+    count = json['count'];
     if (json['restaurants'] != null) {
       restaurants = [];
       json['restaurants'].forEach((v) {
@@ -17,6 +29,9 @@ class RestaurantList {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['error'] = this.error;
+    data['founded'] = this.founded;
+    data['message'] = this.message;
+    data['count'] = this.count;
     if (this.restaurants != null) {
       data['restaurants'] = this.restaurants.map((v) => v.toJson()).toList();
     }
