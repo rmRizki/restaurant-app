@@ -3,6 +3,8 @@ class GlobalString {
   static const search = 'Cari...';
   static const back = 'Kembali';
   static const page_not_found = 'Halaman Tidak Ditemukan';
+  static const failed_request = 'Gagal Memuat Data...';
+  static const reload = 'Muat Ulang';
 }
 
 class MainString {
