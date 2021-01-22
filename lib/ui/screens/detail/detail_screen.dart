@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/core/models/restaurant/restaurant_detail.dart';
+import 'package:restaurant_app/core/data/config.dart';
+import 'package:restaurant_app/core/models/models.dart';
 import 'package:restaurant_app/ui/shared/component/scroll_floating_action_button.dart';
 import 'package:restaurant_app/ui/shared/separator/separator.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';
@@ -27,12 +28,12 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
     _scrollController = ScrollController();
-    widget.restaurant.menus.foods.forEach((element) {
-      foods.add(element.name);
-    });
-    widget.restaurant.menus.drinks.forEach((element) {
-      drinks.add(element.name);
-    });
+    // widget.restaurant.menus.foods.forEach((element) {
+    //   foods.add(element.name);
+    // });
+    // widget.restaurant.menus.drinks.forEach((element) {
+    //   drinks.add(element.name);
+    // });
     super.initState();
   }
 
@@ -66,13 +67,13 @@ class _DetailScreenState extends State<DetailScreen> {
             body: '${widget.restaurant.rating}',
             iconData: Icons.star_border,
           ),
-          _buildSeparator(),
-          _buildInfo(
-            heading: DetailString.totalMenu,
-            body:
-                '${widget.restaurant.menus.drinks.length + widget.restaurant.menus.foods.length}',
-            iconData: Icons.fastfood_outlined,
-          ),
+          // _buildSeparator(),
+          // _buildInfo(
+          //   heading: DetailString.totalMenu,
+          //   body:
+          //       '${widget.restaurant.menus.drinks.length + widget.restaurant.menus.foods.length}',
+          //   iconData: Icons.fastfood_outlined,
+          // ),
           _buildSeparator(),
           _buildDetail(
             heading: DetailString.description,
@@ -123,7 +124,7 @@ class _DetailScreenState extends State<DetailScreen> {
       child: Hero(
         tag: '${widget.restaurant.pictureId}',
         child: CachedNetworkImage(
-          imageUrl: widget.restaurant.pictureId,
+          imageUrl: '${Config.baseSmallImageUrl}${widget.restaurant.pictureId}',
           placeholder: (context, url) => CircularProgressIndicator(),
           errorWidget: (context, url, error) => Icon(Icons.error),
           fit: BoxFit.cover,

@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:restaurant_app/core/models/restaurant/restaurant_detail.dart';
+import 'package:restaurant_app/core/data/config.dart';
+import 'package:restaurant_app/core/models/models.dart';
 import 'package:restaurant_app/ui/shared/container/card_container.dart';
 import 'package:restaurant_app/ui/shared/separator/separator.dart';
 import 'package:restaurant_app/utils/styles/colors.dart';
@@ -38,7 +39,7 @@ class RestaurantCard extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(smallBorderRadius)),
         child: CachedNetworkImage(
-          imageUrl: restaurant.pictureId,
+          imageUrl: '${Config.baseSmallImageUrl}${restaurant.pictureId}',
           placeholder: (context, url) => CircularProgressIndicator(),
           errorWidget: (context, url, error) => Icon(Icons.error),
           height: 90,
