@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/core/models/restaurant/restaurant_response.dart';
+import 'package:restaurant_app/core/models/restaurant/restaurant_detail.dart';
 import 'package:restaurant_app/ui/shared/component/scroll_floating_action_button.dart';
 import 'package:restaurant_app/ui/shared/separator/separator.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';

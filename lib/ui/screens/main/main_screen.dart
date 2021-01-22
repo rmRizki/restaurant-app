@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:restaurant_app/core/models/restaurant/restaurant_response.dart';
+import 'package:restaurant_app/core/models/restaurant/restaurant_detail.dart';
 import 'package:restaurant_app/ui/screens/main/widgets/restaurant_card.dart';
 import 'package:restaurant_app/ui/screens/screens.dart';
 import 'package:restaurant_app/ui/shared/component/scroll_floating_action_button.dart';

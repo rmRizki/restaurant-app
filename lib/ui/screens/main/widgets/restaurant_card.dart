@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:restaurant_app/core/models/restaurant/restaurant_response.dart';
+import 'package:restaurant_app/core/models/restaurant/restaurant_detail.dart';
 import 'package:restaurant_app/ui/shared/container/card_container.dart';
 import 'package:restaurant_app/ui/shared/separator/separator.dart';
 import 'package:restaurant_app/utils/styles/colors.dart';
