@@ -13,7 +13,7 @@ class RestaurantListBloc
     extends Bloc<RestaurantListEvent, RestaurantListState> {
   RestaurantRepository _restaurantRepository;
 
-  RestaurantListBloc() : super(null) {
+  RestaurantListBloc() : super(RestaurantListInitial()) {
     _restaurantRepository = RestaurantRepository();
   }
 
