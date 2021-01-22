@@ -40,6 +40,10 @@ class _MainScreenState extends State<MainScreen> {
     super.dispose();
   }
 
+  _onRequest() {
+    _restaurantListBloc.add(RestaurantListRequested());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
         child: BlocBuilder<RestaurantListBloc, RestaurantListState>(
           builder: (context, state) {
             if (state is RestaurantListInitial) {
-              _restaurantListBloc.add(RestaurantListRequested());
+              _onRequest();
             }
             if (state is RestaurantListLoadInProgress) {
               return Center(child: CircularProgressIndicator());
@@ -73,7 +77,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildMainScreen(RestaurantList restaurantList) {
     return SmartRefresher(
       controller: _refreshController,
-      onRefresh: _onReload,
+      onRefresh: _onRequest,
       child: CustomScrollView(
         controller: _scrollController,
         physics: BouncingScrollPhysics(),
@@ -152,7 +156,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
           SizedBox(height: 8.0),
           MaterialButton(
-            onPressed: _onReload,
+            onPressed: _onRequest,
             color: orange,
             child: Text(GlobalString.reload,
                 style: buttonLabel.copyWith(color: white)),
@@ -160,9 +164,5 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
     );
-  }
-
-  _onReload() {
-    _restaurantListBloc.add(RestaurantListRequested());
   }
 }
