@@ -138,7 +138,11 @@ class _MainScreenState extends State<MainScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(GlobalString.failed_request, textAlign: TextAlign.center),
+          Text(
+            GlobalString.failed_request,
+            textAlign: TextAlign.center,
+            style: paragraphMedium.copyWith(color: grey_80),
+          ),
           SizedBox(height: 4.0),
           Text(
             err,
