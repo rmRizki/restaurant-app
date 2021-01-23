@@ -22,6 +22,8 @@ class RestaurantListBloc
       RestaurantListEvent event) async* {
     if (event is RestaurantListRequested) {
       yield* _mapRestaurantListRequestedToState();
+    } else if (event is RestaurantListSearched) {
+      yield* _mapRestaurantListSearchedToState(event.query);
     }
   }
 
@@ -30,6 +32,19 @@ class RestaurantListBloc
     try {
       final RestaurantList restaurantList =
           await _restaurantRepository.getRestaurantList();
+      yield RestaurantListLoadSuccess(restaurantList: restaurantList);
+    } catch (err) {
+      print(err);
+      yield RestaurantListLoadFailure(err: err);
+    }
+  }
+
+  Stream<RestaurantListState> _mapRestaurantListSearchedToState(
+      String query) async* {
+    yield RestaurantListLoadInProgress();
+    try {
+      final RestaurantList restaurantList =
+          await _restaurantRepository.getRestaurantSearch(query: query);
       yield RestaurantListLoadSuccess(restaurantList: restaurantList);
     } catch (err) {
       print(err);

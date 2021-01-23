@@ -8,3 +8,9 @@ abstract class RestaurantListEvent extends Equatable {
 }
 
 class RestaurantListRequested extends RestaurantListEvent {}
+
+class RestaurantListSearched extends RestaurantListEvent {
+  final String query;
+
+  RestaurantListSearched({this.query});
+}
