@@ -77,6 +77,7 @@ class _MainScreenState extends State<MainScreen> {
       controller: _refreshController,
       onRefresh: _onRequest,
       child: CustomScrollView(
+        shrinkWrap: true,
         controller: _scrollController,
         physics: BouncingScrollPhysics(),
         slivers: [
