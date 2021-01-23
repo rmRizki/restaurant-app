@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:restaurant_app/core/blocs/restaurant/list/restaurant_list_bloc.dart';
+import 'package:restaurant_app/core/blocs/restaurant/restaurant_bloc.dart';
 import 'package:restaurant_app/core/models/models.dart';
 import 'package:restaurant_app/ui/screens/screens.dart';
 import 'package:restaurant_app/ui/shared/component/components.dart';
@@ -19,13 +19,13 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   ScrollController _scrollController;
   TextEditingController _textEditingController;
-  RestaurantListBloc _restaurantListBloc;
+  RestaurantBloc _restaurantBloc;
 
   @override
   void initState() {
     _scrollController = ScrollController();
     _textEditingController = TextEditingController();
-    _restaurantListBloc = RestaurantListBloc();
+    _restaurantBloc = RestaurantBloc();
     super.initState();
   }
 
@@ -37,7 +37,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   _onSearch(String query) {
-    _restaurantListBloc.add(RestaurantListSearched(query: query));
+    _restaurantBloc.add(RestaurantListSearched(query: query));
   }
 
   @override
@@ -47,7 +47,7 @@ class _SearchScreenState extends State<SearchScreen> {
         scrollController: _scrollController,
       ),
       body: BlocProvider(
-        create: (context) => _restaurantListBloc,
+        create: (context) => _restaurantBloc,
         child: SingleChildScrollView(
           controller: _scrollController,
           physics: BouncingScrollPhysics(),
@@ -95,15 +95,15 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildContent() {
-    return BlocBuilder<RestaurantListBloc, RestaurantListState>(
+    return BlocBuilder<RestaurantBloc, RestaurantState>(
       builder: (context, state) {
-        if (state is RestaurantListInitial) {
+        if (state is RestaurantInitial) {
           _onSearch('');
         }
-        if (state is RestaurantListLoadInProgress) {
+        if (state is RestaurantLoadInProgress) {
           return _buildLoading();
         }
-        if (state is RestaurantListLoadFailure) {
+        if (state is RestaurantLoadFailure) {
           return _buildError('${state.err}');
         }
         if (state is RestaurantListLoadSuccess) {
