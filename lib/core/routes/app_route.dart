@@ -9,6 +9,9 @@ class AppRoute {
       case MainScreen.routeName:
         return MaterialPageRoute(builder: (_) => MainScreen());
         break;
+      case SearchScreen.routeName:
+        return MaterialPageRoute(builder: (_) => SearchScreen());
+        break;
       case DetailScreen.routeName:
         Restaurants restaurants = settings.arguments;
         return MaterialPageRoute(

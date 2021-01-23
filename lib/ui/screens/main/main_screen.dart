@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:restaurant_app/core/blocs/blocs.dart';
 import 'package:restaurant_app/core/models/models.dart';
-import 'package:restaurant_app/ui/screens/main/widgets/restaurant_card.dart';
 import 'package:restaurant_app/ui/screens/screens.dart';
+import 'package:restaurant_app/ui/shared/component/restaurant_card.dart';
 import 'package:restaurant_app/ui/shared/component/scroll_floating_action_button.dart';
 import 'package:restaurant_app/utils/sources/images.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';
@@ -79,7 +79,7 @@ class _MainScreenState extends State<MainScreen> {
       child: CustomScrollView(
         controller: _scrollController,
         physics: BouncingScrollPhysics(),
-        slivers: <Widget>[
+        slivers: [
           _buildAppBar(),
           _buildList(restaurantList),
         ],
@@ -91,7 +91,7 @@ class _MainScreenState extends State<MainScreen> {
     return SliverAppBar(
       leading: IconButton(
         icon: Icon(Icons.search),
-        onPressed: () => print('search'),
+        onPressed: () => Navigator.pushNamed(context, SearchScreen.routeName),
       ),
       expandedHeight: 220.0,
       elevation: softElevation,
