@@ -57,4 +57,6 @@ class BaseDecoration {
       ),
     ],
   );
+  static final circleShadowDecoration = BaseDecoration.shadowDecoration
+      .copyWith(borderRadius: BorderRadius.all(Radius.circular(38.0)));
 }
