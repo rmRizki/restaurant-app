@@ -22,8 +22,8 @@ class RestaurantBloc extends Bloc<RestaurantEvent, RestaurantState> {
       yield* _mapRestaurantListRequestedToState();
     } else if (event is RestaurantListSearched) {
       yield* _mapRestaurantListSearchedToState(event.query);
-    } else if (event is RestaurantDetailClicked) {
-      yield* _mapRestaurantDetailClickedToState(event.id);
+    } else if (event is RestaurantDetailRequested) {
+      yield* _mapRestaurantDetailRequestedToState(event.id);
     }
   }
 
@@ -52,7 +52,8 @@ class RestaurantBloc extends Bloc<RestaurantEvent, RestaurantState> {
     }
   }
 
-  Stream<RestaurantState> _mapRestaurantDetailClickedToState(String id) async* {
+  Stream<RestaurantState> _mapRestaurantDetailRequestedToState(
+      String id) async* {
     yield RestaurantLoadInProgress();
     try {
       final RestaurantDetail restaurantDetail =

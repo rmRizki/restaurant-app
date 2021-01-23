@@ -15,8 +15,8 @@ class RestaurantListSearched extends RestaurantEvent {
   RestaurantListSearched({this.query});
 }
 
-class RestaurantDetailClicked extends RestaurantEvent {
+class RestaurantDetailRequested extends RestaurantEvent {
   final String id;
 
-  RestaurantDetailClicked({this.id});
+  RestaurantDetailRequested({this.id});
 }
