@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/core/data/config.dart';
 import 'package:restaurant_app/core/models/models.dart';
+import 'package:restaurant_app/ui/shared/component/custom_back_button.dart';
 import 'package:restaurant_app/ui/shared/component/scroll_floating_action_button.dart';
 import 'package:restaurant_app/ui/shared/separator/separator.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';
@@ -53,7 +54,7 @@ class _DetailScreenState extends State<DetailScreen> {
         controller: _scrollController,
         physics: BouncingScrollPhysics(),
         children: <Widget>[
-          _buildBackButton(context),
+          CustomBackButton(),
           _buildTitle(), // rating, city, description
           _buildMainImage(),
           _buildInfo(
@@ -84,24 +85,6 @@ class _DetailScreenState extends State<DetailScreen> {
               heading: DetailString.drink, body: '${drinks.join(', ')}'),
           SizedBox(height: 16.0),
         ],
-      ),
-    );
-  }
-
-  Widget _buildBackButton(context) {
-    return GestureDetector(
-      onTap: () => Navigator.pop(context),
-      child: Container(
-        padding: EdgeInsets.only(top: 24.0, left: 16.0, bottom: 16.0),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.arrow_back_rounded,
-                size: regularIconSize, color: grey_80),
-            SizedBox(width: 4.0),
-            Text(GlobalString.back, style: bigTitle.copyWith(color: grey_80))
-          ],
-        ),
       ),
     );
   }
