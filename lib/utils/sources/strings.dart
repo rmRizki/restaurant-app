@@ -11,6 +11,10 @@ class MainString {
   static const detail = 'Detail';
 }
 
+class SearchString {
+  static const restaurantName = 'Nama Restaurant...';
+}
+
 class DetailString {
   static const description = 'Tentang Restaurant';
   static const food = 'Makanan';
