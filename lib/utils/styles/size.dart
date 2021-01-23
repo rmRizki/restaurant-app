@@ -22,8 +22,8 @@ const double iconButtonHeight = 32;
 const double smallIconSize = 18;
 const double menuIconSize = 20;
 const double regularIconSize = 22;
+const double largerIconSize = 32;
 const double bigIconSize = 50;
-const double avatarReviewSize = 36;
 
 /// Text Size Constant
 const double h1TextSize = 34;
