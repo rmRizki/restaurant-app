@@ -34,6 +34,12 @@ class _ScrollFloatingActionButtonState
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _scrollController.removeListener(() {});
+    super.dispose();
+  }
+
   _scrollUp() async {
     if (_scrollController.hasClients) {
       await Future.delayed(Duration(milliseconds: 50), () {
