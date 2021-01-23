@@ -12,7 +12,7 @@ class MainString {
 }
 
 class SearchString {
-  static const restaurantName = 'Nama Restaurant...';
+  static const restaurantName = 'Nama Menu/Restaurant...';
   static const resultEmpty = 'Hasil Tidak Ditemukan...';
 }
 
