@@ -27,14 +27,15 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     _scrollController = ScrollController();
-    _restaurantBloc = RestaurantBloc();
     _refreshController = RefreshController();
+    _restaurantBloc = RestaurantBloc();
     super.initState();
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _refreshController.dispose();
     super.dispose();
   }
 
