@@ -1,5 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:restaurant_app/core/blocs/blocs.dart';
 import 'package:restaurant_app/core/data/config.dart';
 import 'package:restaurant_app/core/models/models.dart';
 import 'package:restaurant_app/ui/shared/component/components.dart';
@@ -12,7 +15,7 @@ import 'package:restaurant_app/utils/styles/text.dart';
 class DetailScreen extends StatefulWidget {
   static const routeName = 'detail';
 
-  final Restaurants restaurant;
+  final Restaurant restaurant;
 
   DetailScreen({this.restaurant});
 
@@ -21,26 +24,45 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  List<String> foods = [];
-  List<String> drinks = [];
+  List<String> _foods = [];
+  List<String> _drinks = [];
+  List<String> _categories = [];
+  String _address = '';
   ScrollController _scrollController;
+  RestaurantBloc _restaurantBloc;
+  RefreshController _refreshController;
 
   @override
   void initState() {
     _scrollController = ScrollController();
-    // widget.restaurant.menus.foods.forEach((element) {
-    //   foods.add(element.name);
-    // });
-    // widget.restaurant.menus.drinks.forEach((element) {
-    //   drinks.add(element.name);
-    // });
+    _refreshController = RefreshController();
+    _restaurantBloc = RestaurantBloc();
     super.initState();
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _refreshController.dispose();
     super.dispose();
+  }
+
+  _onDetailRequest(String id) {
+    _restaurantBloc.add(RestaurantDetailRequested(id: id));
+  }
+
+  _clearList() {
+    _categories.clear();
+    _foods.clear();
+    _drinks.clear();
+  }
+
+  _addRequestInfo(String info) {
+    _address = info;
+    _clearList();
+    _categories.add(info);
+    _foods.add(info);
+    _drinks.add(info);
   }
 
   @override
@@ -49,53 +71,100 @@ class _DetailScreenState extends State<DetailScreen> {
       floatingActionButton: ScrollFloatingActionButton(
         scrollController: _scrollController,
       ),
-      body: ListView(
-        controller: _scrollController,
-        physics: BouncingScrollPhysics(),
-        children: <Widget>[
-          CustomBackButton(),
-          _buildTitle(), // rating, city, description
-          _buildMainImage(),
-          _buildInfo(
-            heading: DetailString.city,
-            body: widget.restaurant.city,
-            iconData: Icons.location_on_outlined,
+      body: BlocProvider(
+        create: (context) => _restaurantBloc,
+        child: BlocConsumer<RestaurantBloc, RestaurantState>(
+          listener: (context, state) {
+            if (_refreshController.isRefresh) {
+              _refreshController.refreshCompleted();
+            }
+          },
+          builder: (context, state) {
+            if (state is RestaurantInitial) {
+              _onDetailRequest(widget.restaurant.id);
+            }
+            if (state is RestaurantLoadInProgress) {
+              _addRequestInfo(GlobalString.requesting);
+            }
+            if (state is RestaurantLoadFailure) {
+              _addRequestInfo(GlobalString.failed_request);
+            }
+            if (state is RestaurantDetailLoadSuccess) {
+              _clearList();
+              Restaurant restaurant = state.restaurantDetail.restaurant;
+              _address = restaurant.address;
+              restaurant
+                ..categories.forEach((element) => _categories.add(element.name))
+                ..menus.foods.forEach((element) => _foods.add(element.name))
+                ..menus.drinks.forEach((element) => _drinks.add(element.name));
+            }
+            return _buildDetailContent();
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDetailContent() {
+    return SmartRefresher(
+      controller: _refreshController,
+      scrollController: _scrollController,
+      physics: BouncingScrollPhysics(),
+      onRefresh: () => _onDetailRequest(widget.restaurant.id),
+      child: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomBackButton(),
+              _buildTitle(),
+              _buildMainImage(),
+              _buildHorizontalInfo(
+                heading: DetailString.city,
+                body: widget.restaurant.city,
+                iconData: Icons.location_on_outlined,
+              ),
+              _buildSeparator(),
+              _buildHorizontalInfo(
+                heading: DetailString.address,
+                body: _address,
+              ),
+              _buildSeparator(),
+              _buildHorizontalInfo(
+                heading: DetailString.rating,
+                body: '${widget.restaurant.rating}',
+                iconData: Icons.star_border,
+              ),
+              _buildSeparator(),
+              _buildVerticalInfo(
+                heading: DetailString.description,
+                body: widget.restaurant.description,
+              ),
+              _buildVerticalInfo(
+                  heading: DetailString.categories,
+                  body: '${_categories.join(', ')}'),
+              _buildVerticalInfo(
+                  heading: DetailString.food, body: '${_foods.join(', ')}'),
+              _buildVerticalInfo(
+                  heading: DetailString.drink, body: '${_drinks.join(', ')}'),
+              SizedBox(height: 16.0),
+            ],
           ),
-          _buildSeparator(),
-          _buildInfo(
-            heading: DetailString.rating,
-            body: '${widget.restaurant.rating}',
-            iconData: Icons.star_border,
-          ),
-          // _buildSeparator(),
-          // _buildInfo(
-          //   heading: DetailString.totalMenu,
-          //   body:
-          //       '${widget.restaurant.menus.drinks.length + widget.restaurant.menus.foods.length}',
-          //   iconData: Icons.fastfood_outlined,
-          // ),
-          _buildSeparator(),
-          _buildDetail(
-            heading: DetailString.description,
-            body: widget.restaurant.description,
-          ),
-          _buildDetail(heading: DetailString.food, body: '${foods.join(', ')}'),
-          _buildDetail(
-              heading: DetailString.drink, body: '${drinks.join(', ')}'),
-          SizedBox(height: 16.0),
-        ],
+        ),
       ),
     );
   }
 
   Widget _buildTitle() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: Text(
-        widget.restaurant.name,
-        style:
-            headingText.copyWith(color: orange, fontWeight: FontWeight.normal),
-        textAlign: TextAlign.center,
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: Text(
+          widget.restaurant.name,
+          style: headingText.copyWith(
+              color: orange, fontWeight: FontWeight.normal),
+        ),
       ),
     );
   }
@@ -110,12 +179,14 @@ class _DetailScreenState extends State<DetailScreen> {
           placeholder: (context, url) => CircularProgressIndicator(),
           errorWidget: (context, url, error) => Icon(Icons.error),
           fit: BoxFit.cover,
+          width: double.infinity,
         ),
       ),
     );
   }
 
-  Widget _buildInfo({String heading, String body, IconData iconData}) {
+  Widget _buildHorizontalInfo(
+      {String heading, String body, IconData iconData}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.0),
       child: Row(
@@ -129,10 +200,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   child: Icon(iconData, size: regularIconSize),
                   margin: EdgeInsets.only(right: 8.0),
                 ),
-              Text(
-                body,
-                style: paragraphMedium,
-              ),
+              Text(body, style: paragraphMedium),
             ],
           ),
         ],
@@ -140,18 +208,15 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Widget _buildDetail({String heading, String body}) {
+  Widget _buildVerticalInfo({String heading, String body}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(heading, style: smallTitle),
+          Text(heading, style: smallTitle, textAlign: TextAlign.justify),
           SizedBox(height: 8.0),
-          Text(
-            body,
-            style: paragraphMedium,
-          ),
+          Text(body, style: paragraphMedium),
         ],
       ),
     );
