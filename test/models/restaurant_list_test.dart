@@ -8,7 +8,7 @@ import '../dummy/values.dart';
 main() {
   group('RestaurantList', () {
     test('restaurantList is correctly parsed', () {
-      Map<String, dynamic> json = jsonDecode(DummyRestaurant.list);
+      Map<String, dynamic> json = jsonDecode(DummyRestaurantJson.list);
       print('restaurantList Raw JSON value 1 : $json');
       RestaurantList restaurantList = RestaurantList.fromJson(json);
 
