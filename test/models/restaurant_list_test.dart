@@ -9,7 +9,7 @@ main() {
   group('RestaurantList', () {
     test('restaurantList is correctly parsed', () {
       Map<String, dynamic> json = jsonDecode(DummyRestaurant.list);
-      print('Raw JSON value 1 : $json');
+      print('restaurantList Raw JSON value 1 : $json');
       RestaurantList restaurantList = RestaurantList.fromJson(json);
 
       expect(restaurantList, isA<RestaurantList>());
@@ -22,7 +22,7 @@ main() {
 
     test('restaurantList parsing empty json', () {
       Map<String, dynamic> json = jsonDecode('{}');
-      print('Raw JSON value 2 : $json');
+      print('restaurantList Raw JSON value 2 : $json');
       RestaurantList restaurantList = RestaurantList.fromJson(json);
 
       expect(restaurantList, isA<RestaurantList>());
