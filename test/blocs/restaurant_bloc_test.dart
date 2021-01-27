@@ -22,7 +22,7 @@ main() {
             RestaurantListLoadSuccess(restaurantList: DummyRestaurant.list),
             RestaurantDetailLoadSuccess(
                 restaurantDetail: DummyRestaurant.detail),
-            RestaurantLoadFailure(err: 'dummyError'),
+            RestaurantLoadFailure(err: DummyRestaurant.err),
           ]));
     });
 
@@ -33,20 +33,21 @@ main() {
       build: () => restaurantBloc,
       act: (RestaurantBloc bloc) {
         bloc.add(RestaurantListRequested());
-        bloc.add(RestaurantListSearched(query: 'food'));
-        bloc.add(RestaurantDetailRequested(id: 'rqdv5juczeskfw1e867'));
+        bloc.add(RestaurantListSearched(query: DummyRestaurant.query));
+        bloc.add(RestaurantDetailRequested(id: DummyRestaurant.id));
       },
       expect: [
         RestaurantInitial(),
         RestaurantLoadInProgress(),
         RestaurantListLoadSuccess(restaurantList: DummyRestaurant.list),
         RestaurantDetailLoadSuccess(restaurantDetail: DummyRestaurant.detail),
-        RestaurantLoadFailure(err: 'dummyError'),
+        RestaurantLoadFailure(err: DummyRestaurant.err),
       ],
       verify: (RestaurantBloc bloc) {
         verify(bloc.add(RestaurantListRequested())).called(1);
-        verify(bloc.add(RestaurantListSearched(query: 'food'))).called(1);
-        verify(bloc.add(RestaurantDetailRequested(id: 'rqdv5juczeskfw1e867')));
+        verify(bloc.add(RestaurantListSearched(query: DummyRestaurant.query)))
+            .called(1);
+        verify(bloc.add(RestaurantDetailRequested(id: DummyRestaurant.id)));
         verify(bloc.close()).called(1);
       },
     );
