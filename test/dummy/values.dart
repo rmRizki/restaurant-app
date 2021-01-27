@@ -20,4 +20,10 @@ class DummyRestaurant {
     message: 'Success',
     restaurant: Restaurant(),
   );
+
+  static const err = 'dummyError';
+
+  static const query = 'food';
+
+  static const id = 'rqdv5juczeskfw1e867';
 }
