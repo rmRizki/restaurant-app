@@ -192,7 +192,7 @@ class _DetailScreenState extends State<DetailScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(heading, style: smallTitle),
+          Text(heading, style: paragraphSemiBold),
           Row(
             children: [
               if (iconData != null)
@@ -214,7 +214,7 @@ class _DetailScreenState extends State<DetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(heading, style: smallTitle, textAlign: TextAlign.justify),
+          Text(heading, style: paragraphSemiBold, textAlign: TextAlign.justify),
           SizedBox(height: 8.0),
           Text(body, style: paragraphMedium),
         ],
