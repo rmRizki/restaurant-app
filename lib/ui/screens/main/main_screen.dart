@@ -78,8 +78,10 @@ class _MainScreenState extends State<MainScreen> {
     return SmartRefresher(
       controller: _refreshController,
       onRefresh: _onRequest,
+      header: MaterialClassicHeader(color: orange),
       child: CustomScrollView(
         shrinkWrap: true,
+        primary: false,
         controller: _scrollController,
         physics: BouncingScrollPhysics(),
         slivers: [
@@ -100,13 +102,13 @@ class _MainScreenState extends State<MainScreen> {
       ],
       expandedHeight: 256.0,
       elevation: softElevation,
+      pinned: true,
       flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.pin,
         title: SafeArea(
-          child: Text(
-            GlobalString.title,
-            style: bigTitle.copyWith(
-                fontWeight: FontWeight.normal, color: grey_80),
-          ),
+          child: Text(GlobalString.title,
+              style: bigTitle.copyWith(
+                  fontWeight: FontWeight.normal, color: grey_80)),
         ),
         centerTitle: true,
         background: SafeArea(
