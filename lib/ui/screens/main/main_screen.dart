@@ -121,7 +121,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _buildNavigatorIcon({IconData iconData, String routeName}) {
+  Widget _buildNavigatorIcon({IconData iconData, String routeName = ''}) {
     return IconButton(
       icon: Icon(iconData, color: grey_80),
       onPressed: () {
