@@ -29,14 +29,14 @@ class _DetailScreenState extends State<DetailScreen> {
   List<String> _categories = [];
   String _address = '';
   ScrollController _scrollController;
-  RestaurantBloc _restaurantBloc;
+  DetailBloc _detailBloc;
   RefreshController _refreshController;
 
   @override
   void initState() {
     _scrollController = ScrollController();
     _refreshController = RefreshController();
-    _restaurantBloc = RestaurantBloc();
+    _detailBloc = DetailBloc();
     super.initState();
   }
 
@@ -48,7 +48,7 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   _onDetailRequest(String id) {
-    _restaurantBloc.add(RestaurantDetailRequested(id: id));
+    _detailBloc.add(DetailRequested(id: id));
   }
 
   _clearList() {
@@ -72,24 +72,24 @@ class _DetailScreenState extends State<DetailScreen> {
         scrollController: _scrollController,
       ),
       body: BlocProvider(
-        create: (context) => _restaurantBloc,
-        child: BlocConsumer<RestaurantBloc, RestaurantState>(
+        create: (context) => _detailBloc,
+        child: BlocConsumer<DetailBloc, DetailState>(
           listener: (context, state) {
             if (_refreshController.isRefresh) {
               _refreshController.refreshCompleted();
             }
           },
           builder: (context, state) {
-            if (state is RestaurantInitial) {
+            if (state is DetailInitial) {
               _onDetailRequest(widget.restaurant.id);
             }
-            if (state is RestaurantLoadInProgress) {
+            if (state is DetailLoadInProgress) {
               _addRequestInfo(GlobalString.requesting);
             }
-            if (state is RestaurantLoadFailure) {
+            if (state is DetailLoadFailure) {
               _addRequestInfo(GlobalString.failed_request);
             }
-            if (state is RestaurantDetailLoadSuccess) {
+            if (state is DetailLoadSuccess) {
               _clearList();
               Restaurant restaurant = state.restaurantDetail.restaurant;
               _address = restaurant.address;

@@ -23,13 +23,13 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   ScrollController _scrollController;
   RefreshController _refreshController;
-  RestaurantBloc _restaurantBloc;
+  MainBloc _mainBloc;
 
   @override
   void initState() {
     _scrollController = ScrollController();
     _refreshController = RefreshController();
-    _restaurantBloc = RestaurantBloc();
+    _mainBloc = MainBloc();
     super.initState();
   }
 
@@ -41,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   _onRequest() {
-    _restaurantBloc.add(RestaurantListRequested());
+    _mainBloc.add(MainRequested());
   }
 
   @override
@@ -51,19 +51,19 @@ class _MainScreenState extends State<MainScreen> {
           ScrollFloatingActionButton(scrollController: _scrollController),
       backgroundColor: white,
       body: BlocProvider(
-        create: (context) => _restaurantBloc,
-        child: BlocBuilder<RestaurantBloc, RestaurantState>(
+        create: (context) => _mainBloc,
+        child: BlocBuilder<MainBloc, MainState>(
           builder: (context, state) {
-            if (state is RestaurantInitial) {
+            if (state is MainInitial) {
               _onRequest();
             }
-            if (state is RestaurantLoadInProgress) {
+            if (state is MainLoadInProgress) {
               return Center(child: CircularProgressIndicator());
             }
-            if (state is RestaurantLoadFailure) {
+            if (state is MainLoadFailure) {
               return _buildError('${state.err}');
             }
-            if (state is RestaurantListLoadSuccess) {
+            if (state is MainLoadSuccess) {
               final restaurantList = state.restaurantList;
               return _buildMainScreen(restaurantList);
             }
