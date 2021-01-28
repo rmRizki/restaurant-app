@@ -1,16 +1,26 @@
 # restaurant_app
 
-Restaurant Application
+Restaurant App made with flutter.
+Implementing :
+- [Bloc](https://bloclibrary.dev/)
+- Http Request with [Dio](https://pub.dev/packages/dio)
+- [Hero Animation](https://flutter.dev/docs/development/ui/animations/hero-animations)
+- [SliverList and SliverAppBar](https://flutter.dev/docs/development/ui/advanced/slivers)
+- etc.
 
-## Getting Started
+## Screenshots
+...
 
-This project is a starting point for a Flutter application.
+## Instalation
 
-A few resources to get you started if this is your first Flutter project:
+Install dependencies
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```
+flutter pub get
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Run the app
+
+```
+flutter run
+```
