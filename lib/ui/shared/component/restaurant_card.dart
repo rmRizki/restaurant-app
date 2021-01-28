@@ -72,7 +72,7 @@ class RestaurantCard extends StatelessWidget {
   Widget _buildTitle() {
     return Text(
       restaurant.name,
-      style: smallTitle.copyWith(color: orange),
+      style: smallTitle.copyWith(color: orange, fontWeight: FontWeight.normal),
       overflow: TextOverflow.ellipsis,
     );
   }
