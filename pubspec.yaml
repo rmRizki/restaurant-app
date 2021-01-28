@@ -35,6 +35,7 @@ flutter:
   assets:
     - assets/local_restaurant.json
     - assets/images/header_illustration.svg
+    - assets/images/image_illustration.svg
 
   fonts:
     - family: Montserrat

@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:restaurant_app/core/data/config.dart';
 import 'package:restaurant_app/core/models/models.dart';
 import 'package:restaurant_app/ui/shared/container/card_container.dart';
 import 'package:restaurant_app/ui/shared/separator/separator.dart';
+import 'package:restaurant_app/utils/sources/images.dart';
 import 'package:restaurant_app/utils/styles/colors.dart';
 import 'package:restaurant_app/utils/styles/decoration.dart';
 import 'package:restaurant_app/utils/styles/size.dart';
@@ -40,7 +42,8 @@ class RestaurantCard extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(smallBorderRadius)),
         child: CachedNetworkImage(
           imageUrl: '${Config.baseSmallImageUrl}${restaurant.pictureId}',
-          placeholder: (context, url) => CircularProgressIndicator(),
+          placeholder: (context, url) =>
+              SvgPicture.asset(BaseImages.imageIllustration),
           errorWidget: (context, url, error) => Icon(Icons.error),
           height: 90,
           width: 90,
