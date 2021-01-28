@@ -12,6 +12,9 @@ class AppRoute {
       case SearchScreen.routeName:
         return MaterialPageRoute(builder: (_) => SearchScreen());
         break;
+      case FavoriteScreen.routeName:
+        return MaterialPageRoute(builder: (_) => FavoriteScreen());
+        break;
       case DetailScreen.routeName:
         Restaurants restaurants = settings.arguments;
         return MaterialPageRoute(
