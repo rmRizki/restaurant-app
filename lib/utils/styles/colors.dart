@@ -15,7 +15,7 @@ const Color grey_10 = Color(0xFFEBEAEA);
 const Color grey_5 = Color(0xFFF5F5F5);
 const Color shadowColor = Color.fromRGBO(38, 38, 38, 0.16);
 
-const Color orange = Color(0xFFF6871D);
+const Color orange = Color(0xFFF9A826);
 const Color orangeTransparent = Color.fromRGBO(246, 135, 29, 0.32);
 const Color white = Color(0xFFFFFFFF);
 
