@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:restaurant_app/core/blocs/blocs.dart';
 import 'package:restaurant_app/core/models/models.dart';
@@ -92,16 +94,35 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildAppBar() {
     return SliverAppBar(
       leading: IconButton(
-        icon: Icon(Icons.search),
+        icon: FaIcon(FontAwesomeIcons.search, color: grey_80),
         onPressed: () => Navigator.pushNamed(context, SearchScreen.routeName),
       ),
-      expandedHeight: 220.0,
+      actions: [
+        IconButton(
+          icon: FaIcon(FontAwesomeIcons.solidHeart, color: grey_80),
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: FaIcon(FontAwesomeIcons.cog, color: grey_80),
+          onPressed: () {},
+        ),
+      ],
+      expandedHeight: 256.0,
       elevation: softElevation,
       flexibleSpace: FlexibleSpaceBar(
-        title: Text(GlobalString.title),
-        background: Image.asset(
-          BaseImages.mainImage,
-          fit: BoxFit.cover,
+        title: SafeArea(
+          child: Text(
+            GlobalString.title,
+            style: bigTitle.copyWith(
+                fontWeight: FontWeight.normal, color: grey_80),
+          ),
+        ),
+        centerTitle: true,
+        background: SafeArea(
+          child: Container(
+            padding: EdgeInsets.only(bottom: 64, top: 48),
+            child: SvgPicture.asset(BaseImages.headerIllustration),
+          ),
         ),
       ),
     );
@@ -121,7 +142,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildListItem(RestaurantList restaurantList, int index) {
     Restaurants restaurant = restaurantList.restaurants[index];
     return Container(
-      margin: EdgeInsets.only(right: 16.0, left: 16.0, top: 16.0),
+      margin: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0),
       child: RestaurantCard(
         restaurant: restaurant,
         onPressed: () => Navigator.pushNamed(
