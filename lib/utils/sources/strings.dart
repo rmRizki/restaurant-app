@@ -1,6 +1,7 @@
 class GlobalString {
   static const title = 'Resto.';
   static const search = 'Cari...';
+  static const favorite = 'Daftar Favorit';
   static const back = 'Kembali';
   static const page_not_found = 'Halaman Tidak Ditemukan';
   static const failed_request = 'Gagal Memuat Data...';
