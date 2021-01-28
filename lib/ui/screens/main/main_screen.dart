@@ -92,19 +92,11 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _buildAppBar() {
     return SliverAppBar(
-      leading: IconButton(
-        icon: Icon(Icons.search, color: grey_80),
-        onPressed: () => Navigator.pushNamed(context, SearchScreen.routeName),
-      ),
+      leading: _buildNavigatorIcon(
+          iconData: Icons.search, routeName: SearchScreen.routeName),
       actions: [
-        IconButton(
-          icon: Icon(Icons.favorite, color: grey_80),
-          onPressed: () {},
-        ),
-        IconButton(
-          icon: Icon(Icons.settings, color: grey_80),
-          onPressed: () {},
-        ),
+        _buildNavigatorIcon(iconData: Icons.favorite),
+        _buildNavigatorIcon(iconData: Icons.settings),
       ],
       expandedHeight: 256.0,
       elevation: softElevation,
@@ -124,6 +116,17 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildNavigatorIcon({IconData iconData, String routeName}) {
+    return IconButton(
+      icon: Icon(iconData, color: grey_80),
+      onPressed: () {
+        if (routeName.isNotEmpty) {
+          Navigator.pushNamed(context, routeName);
+        }
+      },
     );
   }
 
