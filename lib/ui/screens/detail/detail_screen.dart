@@ -109,6 +109,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return SmartRefresher(
       controller: _refreshController,
       scrollController: _scrollController,
+      header: MaterialClassicHeader(color: orange),
       physics: BouncingScrollPhysics(),
       onRefresh: () => _onDetailRequest(widget.restaurant.id),
       child: SingleChildScrollView(
@@ -117,7 +118,7 @@ class _DetailScreenState extends State<DetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              CustomBackButton(),
+              _buildAppbar(),
               _buildTitle(),
               _buildMainImage(),
               _buildHorizontalInfo(
@@ -153,6 +154,20 @@ class _DetailScreenState extends State<DetailScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildAppbar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        CustomBackButton(),
+        IconButton(
+          icon: Icon(Icons.favorite_outline, color: grey_80),
+          onPressed: () {},
+          splashRadius: 0.5,
+        ),
+      ],
     );
   }
 
