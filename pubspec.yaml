@@ -17,6 +17,7 @@ dependencies:
   dio: ^3.0.10
   equatable: ^1.2.5
   flutter_bloc: ^6.1.1
+  flutter_svg: ^0.19.2+1
   font_awesome_flutter: ^8.11.0
   pull_to_refresh: ^1.6.4
 
@@ -33,7 +34,7 @@ flutter:
 
   assets:
     - assets/local_restaurant.json
-    - assets/images/main.jpg
+    - assets/images/header_illustration.svg
 
   fonts:
     - family: Montserrat

@@ -1,4 +1,4 @@
 class BaseImages {
   static const imagePath = 'assets/images';
-  static const mainImage = '$imagePath/main.jpg';
+  static const headerIllustration = '$imagePath/header_illustration.svg';
 }
