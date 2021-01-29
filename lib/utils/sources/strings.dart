@@ -18,6 +18,10 @@ class SearchString {
   static const resultEmpty = 'Hasil Tidak Ditemukan...';
 }
 
+class FavoriteString{
+  static const resultEmpty = 'Daftar Favorit Masih Kosong...';
+}
+
 class DetailString {
   static const description = 'Tentang Restaurant';
   static const food = 'Makanan';

@@ -20,23 +20,22 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState>
   @override
   Stream<FavoriteState> mapEventToState(FavoriteEvent event) async* {
     if (event is FavoriteBoxStarted) {
-      _restaurantList = RestaurantList(
-        count: 0,
-        error: false,
-        founded: 0,
-        message: 'Success',
-        restaurants: [],
-      );
+      if (_restaurantList == null) {
+        _restaurantList = RestaurantList(
+          count: 0,
+          error: false,
+          founded: 0,
+          message: 'Success',
+          restaurants: [],
+        );
+      }
+      yield FavoriteLoadInProgress();
     } else if (event is FavoriteAdded) {
-      _restaurantList
-        ..count += 1
-        ..founded += 1
-        ..restaurants.add(event.restaurant);
+      _restaurantList..restaurants.add(event.restaurant);
+      yield FavoriteLoadInProgress();
     } else if (event is FavoriteRemoved) {
-      _restaurantList
-        ..count -= 1
-        ..founded -= 1
-        ..restaurants.removeWhere((item) => item.id == event.restaurant.id);
+      _restaurantList..restaurants.removeWhere((item) => item.id == event.id);
+      yield FavoriteLoadInProgress();
     }
 
     yield FavoriteLoadSuccess(restaurantList: _restaurantList);

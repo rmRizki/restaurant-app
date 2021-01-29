@@ -14,9 +14,9 @@ class FavoriteAdded extends FavoriteEvent {
 }
 
 class FavoriteRemoved extends FavoriteEvent {
-  final Restaurants restaurant;
+  final String id;
 
-  FavoriteRemoved({@required this.restaurant});
+  FavoriteRemoved({@required this.id});
 }
 
 class FavoriteBoxStarted extends FavoriteEvent {}

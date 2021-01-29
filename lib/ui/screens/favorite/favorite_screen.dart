@@ -19,13 +19,11 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   ScrollController _scrollController;
   TextEditingController _textEditingController;
-  SearchBloc _favoriteBloc;
 
   @override
   void initState() {
     _scrollController = ScrollController();
     _textEditingController = TextEditingController();
-    _favoriteBloc = SearchBloc();
     super.initState();
   }
 
@@ -36,33 +34,26 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     super.dispose();
   }
 
-  _onSearch(String query) {
-    _favoriteBloc.add(SearchRequested(query: query));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: ScrollFloatingActionButton(
         scrollController: _scrollController,
       ),
-      body: BlocProvider(
-        create: (context) => _favoriteBloc,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          physics: BouncingScrollPhysics(),
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CustomBackButton(),
-                _buildTitle(),
-                _buildSeparator(),
-                _buildContent(),
-                SizedBox(height: 16.0),
-              ],
-            ),
+      body: SingleChildScrollView(
+        controller: _scrollController,
+        physics: BouncingScrollPhysics(),
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomBackButton(),
+              _buildTitle(),
+              _buildSeparator(),
+              _buildContent(),
+              SizedBox(height: 16.0),
+            ],
           ),
         ),
       ),
@@ -83,18 +74,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   }
 
   Widget _buildContent() {
-    return BlocBuilder<SearchBloc, SearchState>(
+    return BlocBuilder<FavoriteBloc, FavoriteState>(
       builder: (context, state) {
-        if (state is SearchInitial) {
-          _onSearch('');
+        if (state is FavoriteInitial) {
+          context.read<FavoriteBloc>().add(FavoriteBoxStarted());
         }
-        if (state is SearchLoadInProgress) {
-          return _buildLoading();
-        }
-        if (state is SearchLoadFailure) {
-          return _buildError('${state.err}');
-        }
-        if (state is SearchLoadSuccess) {
+        if (state is FavoriteLoadSuccess) {
           final restaurantList = state.restaurantList;
           return _buildList(restaurantList);
         }
@@ -104,7 +89,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   }
 
   Widget _buildList(RestaurantList restaurantList) {
-    return restaurantList.founded == 0
+    return restaurantList.restaurants.length == 0
         ? _buildEmpty()
         : ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -112,7 +97,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             itemBuilder: (context, index) {
               return _buildListItem(restaurantList, index);
             },
-            itemCount: restaurantList.founded,
+            itemCount: restaurantList.restaurants.length,
             primary: false,
           );
   }
@@ -132,53 +117,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     );
   }
 
-  Widget _buildLoading() {
-    return _buildHeightContainer(
-        child: Center(child: CircularProgressIndicator()));
-  }
-
   Widget _buildEmpty() {
     return _buildHeightContainer(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
-        child: Center(
-          child: Text(
-            SearchString.resultEmpty,
-            textAlign: TextAlign.center,
-            style: paragraphMedium.copyWith(color: grey_80),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildError(String err) {
-    return _buildHeightContainer(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              GlobalString.failed_request,
-              textAlign: TextAlign.center,
-              style: paragraphMedium.copyWith(color: grey_80),
-            ),
-            SizedBox(height: 4.0),
-            Text(
-              err,
-              textAlign: TextAlign.center,
-              style: smallCaption.copyWith(color: primary_100),
-            ),
-            SizedBox(height: 8.0),
-            MaterialButton(
-              onPressed: () => _onSearch(_textEditingController.text),
-              color: orange,
-              child: Text(GlobalString.reload,
-                  style: buttonLabel.copyWith(color: white)),
-            ),
-          ],
+      child: Center(
+        child: Text(
+          FavoriteString.resultEmpty,
+          textAlign: TextAlign.center,
+          style: paragraphMedium.copyWith(color: grey_80),
         ),
       ),
     );
@@ -186,9 +131,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
   Widget _buildHeightContainer({Widget child}) {
     return Container(
-        child: child,
-        height: MediaQuery.of(context).size.height / 2,
-        width: double.infinity);
+      child: child,
+      height: MediaQuery.of(context).size.height / 1.5,
+      width: double.infinity,
+    );
   }
 
   Widget _buildSeparator() {

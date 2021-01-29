@@ -22,6 +22,9 @@ class App extends StatelessWidget {
         BlocProvider<DetailBloc>(
           create: (context) => DetailBloc(),
         ),
+        BlocProvider<FavoriteBloc>(
+          create: (context) => FavoriteBloc(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

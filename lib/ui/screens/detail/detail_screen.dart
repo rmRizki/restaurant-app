@@ -66,6 +66,14 @@ class _DetailScreenState extends State<DetailScreen> {
     _drinks.add(info);
   }
 
+  _addFavorite(Restaurants restaurant) {
+    context.read<FavoriteBloc>().add(FavoriteAdded(restaurant: restaurant));
+  }
+
+  _removeFavorite(String id) {
+    context.read<FavoriteBloc>().add(FavoriteRemoved(id: id));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,12 +168,47 @@ class _DetailScreenState extends State<DetailScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomBackButton(),
-        IconButton(
-          icon: Icon(Icons.favorite_outline, color: grey_80),
-          onPressed: () {},
-          splashRadius: 0.5,
-        ),
+        _buildFavoriteButton(),
       ],
+    );
+  }
+
+  Widget _buildFavoriteButton() {
+    return BlocBuilder<FavoriteBloc, FavoriteState>(
+      builder: (context, state) {
+        bool isFavorite = false;
+
+        if (state is FavoriteInitial) {
+          context.read<FavoriteBloc>().add(FavoriteBoxStarted());
+        }
+        if (state is FavoriteLoadSuccess) {
+          isFavorite = state.restaurantList.restaurants
+              .where((restaurant) => restaurant.id == widget.restaurant.id)
+              .toList()
+              .isNotEmpty;
+        }
+        return IconButton(
+          icon: Icon(
+            isFavorite ? Icons.favorite : Icons.favorite_outline,
+            color: grey_80,
+          ),
+          onPressed: () {
+            if (!isFavorite) {
+              _addFavorite(Restaurants(
+                id: widget.restaurant.id,
+                name: widget.restaurant.name,
+                pictureId: widget.restaurant.pictureId,
+                rating: widget.restaurant.rating,
+                description: widget.restaurant.description,
+                city: widget.restaurant.city,
+              ));
+            } else {
+              _removeFavorite(widget.restaurant.id);
+            }
+          },
+          splashRadius: 0.5,
+        );
+      },
     );
   }
 
