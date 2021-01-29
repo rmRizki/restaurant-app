@@ -15,6 +15,15 @@ class DummyRestaurant {
     restaurants: [],
   );
 
+  static Restaurants restaurants = Restaurants(
+    city: 'Medan',
+    description: 'abc',
+    id: 'asd',
+    name: 'mam',
+    pictureId: '14',
+    rating: 4,
+  );
+
   static RestaurantDetail detail = RestaurantDetail(
     error: false,
     message: 'Success',
