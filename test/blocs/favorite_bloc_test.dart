@@ -30,8 +30,7 @@ main() {
       build: () => favoriteBloc,
       act: (FavoriteBloc bloc) => bloc
         ..add(FavoriteBoxStarted())
-        ..add(
-            FavoriteAdded(restaurant: DummyRestaurant.list.restaurants?.first))
+        ..add(FavoriteAdded(restaurant: DummyRestaurant.restaurants))
         ..add(FavoriteRemoved(id: DummyRestaurant.id)),
       expect: [
         FavoriteInitial(),
@@ -40,8 +39,7 @@ main() {
       ],
       verify: (FavoriteBloc bloc) {
         verify(bloc.add(FavoriteBoxStarted())).called(1);
-        verify(bloc.add(FavoriteAdded(
-                restaurant: DummyRestaurant.list.restaurants?.first)))
+        verify(bloc.add(FavoriteAdded(restaurant: DummyRestaurant.restaurants)))
             .called(1);
         verify(bloc.add(FavoriteRemoved(id: DummyRestaurant.id))).called(1);
         verify(bloc.close()).called(1);
