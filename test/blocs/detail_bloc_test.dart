@@ -10,12 +10,12 @@ class MockDetailBloc extends MockBloc<DetailState>
 
 main() {
   group('DetailBloc', () {
-    DetailBloc mainBloc;
+    DetailBloc detailBloc;
 
     setUp(() {
-      mainBloc = MockDetailBloc();
+      detailBloc = MockDetailBloc();
       whenListen(
-          mainBloc,
+          detailBloc,
           Stream.fromIterable([
             DetailInitial(),
             DetailLoadInProgress(),
@@ -24,11 +24,11 @@ main() {
           ]));
     });
 
-    tearDown(() => mainBloc.close());
+    tearDown(() => detailBloc.close());
 
     blocTest(
       'test bloc, event and state',
-      build: () => mainBloc,
+      build: () => detailBloc,
       act: (DetailBloc bloc) => bloc.add(DetailRequested(id: DummyRestaurant.id)),
       expect: [
         DetailInitial(),
