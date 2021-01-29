@@ -29,7 +29,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     _scrollController = ScrollController();
     _refreshController = RefreshController();
-    _mainBloc = MainBloc();
+    _mainBloc = context.read<MainBloc>();
     super.initState();
   }
 
@@ -50,26 +50,23 @@ class _MainScreenState extends State<MainScreen> {
       floatingActionButton:
           ScrollFloatingActionButton(scrollController: _scrollController),
       backgroundColor: white,
-      body: BlocProvider(
-        create: (context) => _mainBloc,
-        child: BlocBuilder<MainBloc, MainState>(
-          builder: (context, state) {
-            if (state is MainInitial) {
-              _onRequest();
-            }
-            if (state is MainLoadInProgress) {
-              return Center(child: CircularProgressIndicator());
-            }
-            if (state is MainLoadFailure) {
-              return _buildError('${state.err}');
-            }
-            if (state is MainLoadSuccess) {
-              final restaurantList = state.restaurantList;
-              return _buildMainScreen(restaurantList);
-            }
-            return Container();
-          },
-        ),
+      body: BlocBuilder<MainBloc, MainState>(
+        builder: (context, state) {
+          if (state is MainInitial) {
+            _onRequest();
+          }
+          if (state is MainLoadInProgress) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (state is MainLoadFailure) {
+            return _buildError('${state.err}');
+          }
+          if (state is MainLoadSuccess) {
+            final restaurantList = state.restaurantList;
+            return _buildMainScreen(restaurantList);
+          }
+          return Container();
+        },
       ),
     );
   }

@@ -36,7 +36,8 @@ class _DetailScreenState extends State<DetailScreen> {
   void initState() {
     _scrollController = ScrollController();
     _refreshController = RefreshController();
-    _detailBloc = DetailBloc();
+    _detailBloc = context.read<DetailBloc>()
+      ..add(DetailRequested(id: widget.restaurant.id));
     super.initState();
   }
 
@@ -71,36 +72,33 @@ class _DetailScreenState extends State<DetailScreen> {
       floatingActionButton: ScrollFloatingActionButton(
         scrollController: _scrollController,
       ),
-      body: BlocProvider(
-        create: (context) => _detailBloc,
-        child: BlocConsumer<DetailBloc, DetailState>(
-          listener: (context, state) {
-            if (_refreshController.isRefresh) {
-              _refreshController.refreshCompleted();
-            }
-          },
-          builder: (context, state) {
-            if (state is DetailInitial) {
-              _onDetailRequest(widget.restaurant.id);
-            }
-            if (state is DetailLoadInProgress) {
-              _addRequestInfo(GlobalString.requesting);
-            }
-            if (state is DetailLoadFailure) {
-              _addRequestInfo(GlobalString.failed_request);
-            }
-            if (state is DetailLoadSuccess) {
-              _clearList();
-              Restaurant restaurant = state.restaurantDetail.restaurant;
-              _address = restaurant.address;
-              restaurant
-                ..categories.forEach((element) => _categories.add(element.name))
-                ..menus.foods.forEach((element) => _foods.add(element.name))
-                ..menus.drinks.forEach((element) => _drinks.add(element.name));
-            }
-            return _buildDetailContent();
-          },
-        ),
+      body: BlocConsumer<DetailBloc, DetailState>(
+        listener: (context, state) {
+          if (_refreshController.isRefresh) {
+            _refreshController.refreshCompleted();
+          }
+        },
+        builder: (context, state) {
+          if (state is DetailInitial) {
+            _onDetailRequest(widget.restaurant.id);
+          }
+          if (state is DetailLoadInProgress) {
+            _addRequestInfo(GlobalString.requesting);
+          }
+          if (state is DetailLoadFailure) {
+            _addRequestInfo(GlobalString.failed_request);
+          }
+          if (state is DetailLoadSuccess) {
+            _clearList();
+            Restaurant restaurant = state.restaurantDetail.restaurant;
+            _address = restaurant.address;
+            restaurant
+              ..categories.forEach((element) => _categories.add(element.name))
+              ..menus.foods.forEach((element) => _foods.add(element.name))
+              ..menus.drinks.forEach((element) => _drinks.add(element.name));
+          }
+          return _buildDetailContent();
+        },
       ),
     );
   }

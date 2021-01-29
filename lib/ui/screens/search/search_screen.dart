@@ -25,7 +25,7 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     _scrollController = ScrollController();
     _textEditingController = TextEditingController();
-    _searchBloc = SearchBloc();
+    _searchBloc = context.read<SearchBloc>()..add(SearchRequested(query: ''));
     super.initState();
   }
 
@@ -46,24 +46,21 @@ class _SearchScreenState extends State<SearchScreen> {
       floatingActionButton: ScrollFloatingActionButton(
         scrollController: _scrollController,
       ),
-      body: BlocProvider(
-        create: (context) => _searchBloc,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          physics: BouncingScrollPhysics(),
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CustomBackButton(),
-                _buildTitle(),
-                _buildSearchField(),
-                _buildSeparator(),
-                _buildContent(),
-                SizedBox(height: 16.0),
-              ],
-            ),
+      body: SingleChildScrollView(
+        controller: _scrollController,
+        physics: BouncingScrollPhysics(),
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomBackButton(),
+              _buildTitle(),
+              _buildSearchField(),
+              _buildSeparator(),
+              _buildContent(),
+              SizedBox(height: 16.0),
+            ],
           ),
         ),
       ),
