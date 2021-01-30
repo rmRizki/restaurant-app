@@ -96,7 +96,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               'Notification ${value ? 'started' : 'stopped'}'));
                       context
                           .read<NotificationCubit>()
-                          .scheduledRestaurant(value);
+                          .scheduleRestaurant(value);
                     }
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
