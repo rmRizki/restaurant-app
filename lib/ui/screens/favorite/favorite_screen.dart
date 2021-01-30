@@ -5,6 +5,7 @@ import 'package:restaurant_app/core/models/models.dart';
 import 'package:restaurant_app/ui/screens/screens.dart';
 import 'package:restaurant_app/ui/shared/component/components.dart';
 import 'package:restaurant_app/ui/shared/separator/separator.dart';
+import 'package:restaurant_app/utils/navigation.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';
 import 'package:restaurant_app/utils/styles/colors.dart';
 import 'package:restaurant_app/utils/styles/text.dart';
@@ -105,8 +106,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       margin: EdgeInsets.only(right: 16.0, left: 16.0, top: 16.0),
       child: RestaurantCard(
         restaurant: restaurant,
-        onPressed: () => Navigator.pushNamed(
-          context,
+        onPressed: () => Navigation.pushNamed(
           DetailScreen.routeName,
           arguments: restaurant,
         ),

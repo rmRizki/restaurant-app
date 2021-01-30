@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/utils/navigation.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';
 import 'package:restaurant_app/utils/styles/colors.dart';
 import 'package:restaurant_app/utils/styles/size.dart';
@@ -8,7 +9,7 @@ class CustomBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pop(context),
+      onTap: () => Navigation.pop(),
       child: Container(
         padding: EdgeInsets.only(top: 24.0, left: 16.0, bottom: 16.0),
         child: Row(

@@ -7,6 +7,7 @@ import 'package:restaurant_app/core/models/models.dart';
 import 'package:restaurant_app/ui/screens/screens.dart';
 import 'package:restaurant_app/ui/shared/component/restaurant_card.dart';
 import 'package:restaurant_app/ui/shared/component/scroll_floating_action_button.dart';
+import 'package:restaurant_app/utils/navigation.dart';
 import 'package:restaurant_app/utils/sources/images.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';
 import 'package:restaurant_app/utils/styles/colors.dart';
@@ -125,7 +126,7 @@ class _MainScreenState extends State<MainScreen> {
       icon: Icon(iconData, color: grey_80),
       onPressed: () {
         if (routeName.isNotEmpty) {
-          Navigator.pushNamed(context, routeName);
+          Navigation.pushNamed(routeName);
         }
       },
     );
@@ -148,8 +149,7 @@ class _MainScreenState extends State<MainScreen> {
       margin: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0),
       child: RestaurantCard(
         restaurant: restaurant,
-        onPressed: () => Navigator.pushNamed(
-          context,
+        onPressed: () => Navigation.pushNamed(
           DetailScreen.routeName,
           arguments: restaurant,
         ),

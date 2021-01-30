@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:restaurant_app/core/blocs/cubit/notification_cubit.dart';
 import 'package:restaurant_app/ui/shared/component/components.dart';
 import 'package:restaurant_app/ui/shared/separator/separator.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';
@@ -79,15 +81,26 @@ class _SettingScreenState extends State<SettingScreen> {
                     style: captionMedium.copyWith(color: grey_80)),
               ],
             ),
-            trailing: Switch.adaptive(
-              value: isOn,
-              onChanged: (value) async {
-                if (Platform.isIOS) {
-                  print('Background Service Not Supported');
-                } else {
-                  print('scheduled');
-                  setState(() => isOn = value);
-                }
+            trailing: BlocBuilder<NotificationCubit, bool>(
+              builder: (context, state) {
+                return Switch.adaptive(
+                  value: state,
+                  onChanged: (value) async {
+                    var snackBar;
+                    if (Platform.isIOS) {
+                      snackBar =
+                          SnackBar(content: Text('Not Supported for iOS'));
+                    } else {
+                      snackBar = SnackBar(
+                          content: Text(
+                              'Notification ${value ? 'started' : 'stopped'}'));
+                      context
+                          .read<NotificationCubit>()
+                          .scheduledRestaurant(value);
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  },
+                );
               },
             ),
           ),
