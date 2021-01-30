@@ -1,6 +1,7 @@
 class GlobalString {
   static const title = 'Resto.';
   static const search = 'Cari...';
+  static const setting = 'Pengaturan';
   static const favorite = 'Daftar Favorit';
   static const back = 'Kembali';
   static const page_not_found = 'Halaman Tidak Ditemukan';
@@ -18,7 +19,7 @@ class SearchString {
   static const resultEmpty = 'Hasil Tidak Ditemukan...';
 }
 
-class FavoriteString{
+class FavoriteString {
   static const resultEmpty = 'Daftar Favorit Masih Kosong...';
 }
 
@@ -30,4 +31,9 @@ class DetailString {
   static const city = 'Kota';
   static const address = 'Alamat';
   static const categories = 'Kategori';
+}
+
+class SettingString {
+  static const dailyNotif = 'Notifikasi Harian';
+  static const dailyNotifDesc = 'Menerima rekomendasi restoran';
 }

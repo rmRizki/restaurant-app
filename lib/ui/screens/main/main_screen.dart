@@ -96,7 +96,8 @@ class _MainScreenState extends State<MainScreen> {
       actions: [
         _buildNavigatorIcon(
             iconData: Icons.favorite, routeName: FavoriteScreen.routeName),
-        _buildNavigatorIcon(iconData: Icons.settings),
+        _buildNavigatorIcon(
+            iconData: Icons.settings, routeName: SettingScreen.routeName),
       ],
       expandedHeight: 256.0,
       elevation: softElevation,
