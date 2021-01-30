@@ -33,6 +33,12 @@ dev_dependencies:
   test: ^1.15.7
   bloc_test: ^7.1.0
   mockito: ^4.1.4
+  flutter_launcher_icons: ^0.8.1
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/main.png"
 
 flutter:
 
