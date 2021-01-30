@@ -3,7 +3,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 class NotificationCubit extends HydratedCubit<bool> {
   NotificationCubit() : super(false);
 
-  Future<bool> scheduledRestaurant(bool value) async {
+  Future<bool> scheduleRestaurant(bool value) async {
     if (value) {
       print('Scheduling Restaurant Activated');
       emit(value);
