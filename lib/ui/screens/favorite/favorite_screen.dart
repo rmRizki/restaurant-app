@@ -18,19 +18,16 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   ScrollController _scrollController;
-  TextEditingController _textEditingController;
 
   @override
   void initState() {
     _scrollController = ScrollController();
-    _textEditingController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    _textEditingController.dispose();
     super.dispose();
   }
 
