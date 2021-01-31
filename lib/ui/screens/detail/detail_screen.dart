@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:restaurant_app/core/blocs/blocs.dart';
 import 'package:restaurant_app/core/data/config.dart';
 import 'package:restaurant_app/core/models/models.dart';
 import 'package:restaurant_app/ui/shared/component/components.dart';
 import 'package:restaurant_app/ui/shared/separator/separator.dart';
+import 'package:restaurant_app/utils/sources/images.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';
 import 'package:restaurant_app/utils/styles/colors.dart';
 import 'package:restaurant_app/utils/styles/size.dart';
@@ -36,8 +38,7 @@ class _DetailScreenState extends State<DetailScreen> {
   void initState() {
     _scrollController = ScrollController();
     _refreshController = RefreshController();
-    _detailBloc = context.read<DetailBloc>()
-      ..add(DetailRequested(id: widget.restaurant.id));
+    _detailBloc = DetailBloc();
     super.initState();
   }
 
@@ -66,47 +67,43 @@ class _DetailScreenState extends State<DetailScreen> {
     _drinks.add(info);
   }
 
-  _addFavorite(Restaurants restaurant) {
-    context.read<FavoriteBloc>().add(FavoriteAdded(restaurant: restaurant));
-  }
-
-  _removeFavorite(String id) {
-    context.read<FavoriteBloc>().add(FavoriteRemoved(id: id));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: ScrollFloatingActionButton(
         scrollController: _scrollController,
       ),
-      body: BlocConsumer<DetailBloc, DetailState>(
-        listener: (context, state) {
-          if (_refreshController.isRefresh) {
-            _refreshController.refreshCompleted();
-          }
-        },
-        builder: (context, state) {
-          if (state is DetailInitial) {
-            _onDetailRequest(widget.restaurant.id);
-          }
-          if (state is DetailLoadInProgress) {
-            _addRequestInfo(GlobalString.requesting);
-          }
-          if (state is DetailLoadFailure) {
-            _addRequestInfo(GlobalString.failed_request);
-          }
-          if (state is DetailLoadSuccess) {
-            _clearList();
-            Restaurant restaurant = state.restaurantDetail.restaurant;
-            _address = restaurant.address;
-            restaurant
-              ..categories.forEach((element) => _categories.add(element.name))
-              ..menus.foods.forEach((element) => _foods.add(element.name))
-              ..menus.drinks.forEach((element) => _drinks.add(element.name));
-          }
-          return _buildDetailContent();
-        },
+      body: BlocProvider<DetailBloc>(
+        create: (context) =>
+            _detailBloc..add(DetailRequested(id: widget.restaurant.id)),
+        child: BlocConsumer<DetailBloc, DetailState>(
+          listener: (context, state) {
+            if (_refreshController.isRefresh) {
+              _refreshController.refreshCompleted();
+            }
+          },
+          builder: (context, state) {
+            if (state is DetailInitial) {
+              _onDetailRequest(widget.restaurant.id);
+            }
+            if (state is DetailLoadInProgress) {
+              _addRequestInfo(GlobalString.requesting);
+            }
+            if (state is DetailLoadFailure) {
+              _addRequestInfo(GlobalString.failed_request);
+            }
+            if (state is DetailLoadSuccess) {
+              _clearList();
+              Restaurant restaurant = state.restaurantDetail.restaurant;
+              _address = restaurant.address;
+              restaurant
+                ..categories.forEach((element) => _categories.add(element.name))
+                ..menus.foods.forEach((element) => _foods.add(element.name))
+                ..menus.drinks.forEach((element) => _drinks.add(element.name));
+            }
+            return _buildDetailContent();
+          },
+        ),
       ),
     );
   }
@@ -194,16 +191,22 @@ class _DetailScreenState extends State<DetailScreen> {
           ),
           onPressed: () {
             if (!isFavorite) {
-              _addFavorite(Restaurants(
-                id: widget.restaurant.id,
-                name: widget.restaurant.name,
-                pictureId: widget.restaurant.pictureId,
-                rating: widget.restaurant.rating,
-                description: widget.restaurant.description,
-                city: widget.restaurant.city,
-              ));
+              context.read<FavoriteBloc>().add(
+                    FavoriteAdded(
+                      restaurant: Restaurants(
+                        id: widget.restaurant.id,
+                        name: widget.restaurant.name,
+                        pictureId: widget.restaurant.pictureId,
+                        rating: widget.restaurant.rating,
+                        description: widget.restaurant.description,
+                        city: widget.restaurant.city,
+                      ),
+                    ),
+                  );
             } else {
-              _removeFavorite(widget.restaurant.id);
+              context
+                  .read<FavoriteBloc>()
+                  .add(FavoriteRemoved(id: widget.restaurant.id));
             }
           },
           splashRadius: 0.5,
@@ -232,7 +235,8 @@ class _DetailScreenState extends State<DetailScreen> {
         tag: '${widget.restaurant.pictureId}',
         child: CachedNetworkImage(
           imageUrl: '${Config.baseSmallImageUrl}${widget.restaurant.pictureId}',
-          placeholder: (context, url) => CircularProgressIndicator(),
+          placeholder: (context, url) =>
+              SvgPicture.asset(BaseImages.imageIllustration),
           errorWidget: (context, url, error) => Icon(Icons.error),
           fit: BoxFit.cover,
           width: double.infinity,

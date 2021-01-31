@@ -1,4 +1,7 @@
+import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:restaurant_app/utils/background_service.dart';
+import 'package:restaurant_app/utils/date_time_helper.dart';
 
 class NotificationCubit extends HydratedCubit<bool> {
   NotificationCubit() : super(false);
@@ -7,11 +10,19 @@ class NotificationCubit extends HydratedCubit<bool> {
     if (value) {
       print('Scheduling Restaurant Activated');
       emit(value);
-      //TODO create notification here
+      return await AndroidAlarmManager.periodic(
+        Duration(hours: 24),
+        1,
+        BackgroundService.callback,
+        startAt: DateTimeHelper.format(),
+        exact: true,
+        wakeup: true,
+        rescheduleOnReboot: true,
+      );
     } else {
       print('Scheduling Restaurant Canceled');
       emit(value);
-      //TODO cancel notification here
+      return await AndroidAlarmManager.cancel(1);
     }
   }
 

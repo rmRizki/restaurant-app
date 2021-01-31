@@ -29,7 +29,7 @@ class NotificationHelper {
     );
 
     var initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+        initializationSettingsAndroid, initializationSettingsIOS);
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) async {
@@ -49,15 +49,14 @@ class NotificationHelper {
 
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         _channelId, _channelName, _channelDescription,
-        importance: Importance.max,
-        priority: Priority.high,
+        importance: Importance.Max,
+        priority: Priority.High,
         ticker: 'ticker',
         styleInformation: DefaultStyleInformation(true, true));
 
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: iOSPlatformChannelSpecifics);
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
     var titleNotification = "<b>Rekomendasi Resto.</b>";
     var randomIndex = Random().nextInt(restaurantList.restaurants.length - 1);
@@ -71,9 +70,9 @@ class NotificationHelper {
 
   void configureSelectNotificationSubject(String route) {
     selectNotificationSubject.stream.listen(
-      (String payload) async {
+      (String payload) {
         var data = Restaurants.fromJson(json.decode(payload));
-        Navigation.pushNamed(route, data);
+        Navigation.pushNamed(route, arguments: data);
       },
     );
   }

@@ -7,7 +7,9 @@ import 'package:restaurant_app/core/models/models.dart';
 import 'package:restaurant_app/ui/screens/screens.dart';
 import 'package:restaurant_app/ui/shared/component/restaurant_card.dart';
 import 'package:restaurant_app/ui/shared/component/scroll_floating_action_button.dart';
+import 'package:restaurant_app/utils/background_service.dart';
 import 'package:restaurant_app/utils/navigation.dart';
+import 'package:restaurant_app/utils/notification_helper.dart';
 import 'package:restaurant_app/utils/sources/images.dart';
 import 'package:restaurant_app/utils/sources/strings.dart';
 import 'package:restaurant_app/utils/styles/colors.dart';
@@ -22,6 +24,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final NotificationHelper _notificationHelper = NotificationHelper();
+  final BackgroundService _service = BackgroundService();
   ScrollController _scrollController;
   RefreshController _refreshController;
   MainBloc _mainBloc;
@@ -30,7 +34,10 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     _scrollController = ScrollController();
     _refreshController = RefreshController();
-    _mainBloc = context.read<MainBloc>();
+    _mainBloc = MainBloc();
+    port.listen((_) async => await _service.someTask());
+    _notificationHelper
+        .configureSelectNotificationSubject(DetailScreen.routeName);
     super.initState();
   }
 
@@ -38,6 +45,7 @@ class _MainScreenState extends State<MainScreen> {
   void dispose() {
     _scrollController.dispose();
     _refreshController.dispose();
+    selectNotificationSubject.close();
     super.dispose();
   }
 
@@ -51,23 +59,26 @@ class _MainScreenState extends State<MainScreen> {
       floatingActionButton:
           ScrollFloatingActionButton(scrollController: _scrollController),
       backgroundColor: white,
-      body: BlocBuilder<MainBloc, MainState>(
-        builder: (context, state) {
-          if (state is MainInitial) {
-            _onRequest();
-          }
-          if (state is MainLoadInProgress) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (state is MainLoadFailure) {
-            return _buildError('${state.err}');
-          }
-          if (state is MainLoadSuccess) {
-            final restaurantList = state.restaurantList;
-            return _buildMainScreen(restaurantList);
-          }
-          return Container();
-        },
+      body: BlocProvider(
+        create: (context) => _mainBloc,
+        child: BlocBuilder<MainBloc, MainState>(
+          builder: (context, state) {
+            if (state is MainInitial) {
+              _onRequest();
+            }
+            if (state is MainLoadInProgress) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (state is MainLoadFailure) {
+              return _buildError('${state.err}');
+            }
+            if (state is MainLoadSuccess) {
+              final restaurantList = state.restaurantList;
+              return _buildMainScreen(restaurantList);
+            }
+            return Container();
+          },
+        ),
       ),
     );
   }

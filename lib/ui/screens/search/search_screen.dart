@@ -26,7 +26,7 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     _scrollController = ScrollController();
     _textEditingController = TextEditingController();
-    _searchBloc = context.read<SearchBloc>()..add(SearchRequested(query: ''));
+    _searchBloc = SearchBloc()..add(SearchRequested(query: ''));
     super.initState();
   }
 
@@ -93,23 +93,26 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildContent() {
-    return BlocBuilder<SearchBloc, SearchState>(
-      builder: (context, state) {
-        if (state is SearchInitial) {
-          _onSearch('');
-        }
-        if (state is SearchLoadInProgress) {
-          return _buildLoading();
-        }
-        if (state is SearchLoadFailure) {
-          return _buildError('${state.err}');
-        }
-        if (state is SearchLoadSuccess) {
-          final restaurantList = state.restaurantList;
-          return _buildList(restaurantList);
-        }
-        return Container();
-      },
+    return BlocProvider(
+      create: (context) => _searchBloc,
+      child: BlocBuilder<SearchBloc, SearchState>(
+        builder: (context, state) {
+          if (state is SearchInitial) {
+            _onSearch('');
+          }
+          if (state is SearchLoadInProgress) {
+            return _buildLoading();
+          }
+          if (state is SearchLoadFailure) {
+            return _buildError('${state.err}');
+          }
+          if (state is SearchLoadSuccess) {
+            final restaurantList = state.restaurantList;
+            return _buildList(restaurantList);
+          }
+          return Container();
+        },
+      ),
     );
   }
 

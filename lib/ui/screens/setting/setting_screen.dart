@@ -81,27 +81,24 @@ class _SettingScreenState extends State<SettingScreen> {
                     style: captionMedium.copyWith(color: grey_80)),
               ],
             ),
-            trailing: BlocBuilder<NotificationCubit, bool>(
-              builder: (context, state) {
-                return Switch.adaptive(
-                  value: state,
-                  onChanged: (value) async {
-                    var snackBar;
-                    if (Platform.isIOS) {
-                      snackBar =
-                          SnackBar(content: Text('Not Supported for iOS'));
-                    } else {
-                      snackBar = SnackBar(
-                          content: Text(
-                              'Notification ${value ? 'started' : 'stopped'}'));
-                      context
-                          .read<NotificationCubit>()
-                          .scheduleRestaurant(value);
-                    }
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  },
-                );
-              },
+            trailing: BlocProvider<NotificationCubit>(
+              create: (context) => NotificationCubit(),
+              child: BlocBuilder<NotificationCubit, bool>(
+                builder: (context, state) {
+                  return Switch.adaptive(
+                    value: state,
+                    onChanged: (value) async {
+                      if (Platform.isIOS) {
+                        print('Not supported for iOS');
+                      } else {
+                        context
+                            .read<NotificationCubit>()
+                            .scheduleRestaurant(value);
+                      }
+                    },
+                  );
+                },
+              ),
             ),
           ),
         ),
